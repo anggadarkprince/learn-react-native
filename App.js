@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
-import AlbumList from './src/components/AlbumList';
+import AlbumList from './src/components/album/AlbumList';
 
 export default function App() {
   return (
