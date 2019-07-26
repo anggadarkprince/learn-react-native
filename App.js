@@ -3,8 +3,10 @@ import firebase from 'firebase';
 import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
 import LoginForm from './src/components/LoginForm';
+import { Button, Spinner } from './src/components/interaction';
 
 export default class App extends React.Component {
+  state = { loggedIn: null };
 
   componentWillMount() {
     const firebaseConfig = {
@@ -17,13 +19,31 @@ export default class App extends React.Component {
       appId: '1:116414226195:web:b40cb415478cd7c7'
     };
     firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ loggedIn: true });
+      } else {
+        this.setState({ loggedIn: false });
+      }
+    });
+  }
+
+  renderContent() {
+    switch (this.state.loggedIn) {
+      case true:
+        return <Button onPress={() => firebase.auth().signOut()}>Log Out</Button>;
+      case false:
+        return <LoginForm />;
+      default:
+        return <Spinner size="large" />;
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Header headerText={'Login'} />
-        <LoginForm />
+        {this.renderContent()}
       </View>
     );
   }
