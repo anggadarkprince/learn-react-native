@@ -3,10 +3,11 @@ import firebase from 'firebase';
 import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
 import LoginForm from './src/components/LoginForm';
-import { Button, Spinner } from './src/components/interaction';
+import { Spinner } from './src/components/interaction';
+import AlbumList from './src/components/album/AlbumList';
 
 export default class App extends React.Component {
-  state = { loggedIn: null };
+  state = { title: 'Login', loggedIn: null };
 
   componentWillMount() {
     const firebaseConfig = {
@@ -21,9 +22,9 @@ export default class App extends React.Component {
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ loggedIn: true });
+        this.setState({ title: 'Albums', loggedIn: true });
       } else {
-        this.setState({ loggedIn: false });
+        this.setState({ title: 'Login', loggedIn: false });
       }
     });
   }
@@ -31,7 +32,7 @@ export default class App extends React.Component {
   renderContent() {
     switch (this.state.loggedIn) {
       case true:
-        return <Button onPress={() => firebase.auth().signOut()}>Log Out</Button>;
+        return <AlbumList />;
       case false:
         return <LoginForm />;
       default:
@@ -42,7 +43,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header headerText={'Login'} />
+        <Header headerText={this.state.title} />
         {this.renderContent()}
       </View>
     );
