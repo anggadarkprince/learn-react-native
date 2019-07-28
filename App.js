@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
 import LoginForm from './src/components/LoginForm';
 import { Spinner } from './src/components/interaction';
-import AlbumList from './src/components/album/AlbumList';
+import MainMenu from './src/components/MainMenu';
 
 export default class App extends React.Component {
   state = { title: 'Login', loggedIn: null };
@@ -22,7 +22,7 @@ export default class App extends React.Component {
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ title: 'Albums', loggedIn: true });
+        this.setState({ title: 'Menu', loggedIn: true });
       } else {
         this.setState({ title: 'Login', loggedIn: false });
       }
@@ -32,7 +32,7 @@ export default class App extends React.Component {
   renderContent() {
     switch (this.state.loggedIn) {
       case true:
-        return <AlbumList />;
+        return <MainMenu />;
       case false:
         return <LoginForm />;
       default:

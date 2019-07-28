@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { Text, ActivityIndicator } from 'react-native';
+import { Text } from 'react-native';
 import { Button, Input, Spinner } from './interaction';
 import Card from './card/Card';
 import CardSection from './card/CardSection';
@@ -18,9 +18,7 @@ class LoginForm extends Component {
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then(this.onLoginSuccess.bind(this))
-                    .catch((e) => {
-                        this.onLoginFail.bind(this, e);
-                    });
+                    .catch(this.onLoginFail.bind(this));
             });
     }
 
